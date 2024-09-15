@@ -1,9 +1,11 @@
 package pong.PongJDK;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.graphics.Texture;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements ApplicationListener {
+    Texture 
     @Override
     public void create() {
         // Prepare your application here.
