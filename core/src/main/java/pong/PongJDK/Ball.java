@@ -1,6 +1,7 @@
 package pong.PongJDK;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,10 +14,12 @@ public class Ball {
     private Sprite ballSprite;
     private Circle ballCollision;
     private SpriteBatch batch;
+    Sound paddlehitSound;
+    Sound wallHitSound;
+    Sound gameOverSound;
 
     private float roundDelayTimer = 3; // Delay period in seconds (adjust as needed)
     private boolean isDelayInProgress = false; // Flag to indicate if the delay period is in progress
-    private boolean isRoundInProgress = true;
 
     Ball(float x, float y, float vx, float vy){
         this.position = new Vector2(x,y);
@@ -29,6 +32,9 @@ public class Ball {
         ballSprite.setSize(0.2f,0.2f);
         SpriteBatch ballSpriteBatch = new SpriteBatch();
         velocity.x = -.75f;
+        paddlehitSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/player2hit.mp3"));
+        wallHitSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/player1hit.mp3"));
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/restart.mp3"));
     }
     public void updateBall(Rectangle paddle1Collision, Rectangle paddle2Collision, float worldWidth, float worldHeight) {
         float delta = Gdx.graphics.getDeltaTime();
@@ -60,12 +66,15 @@ public class Ball {
 
             if(position.y < 0 || position.y > worldHeight - ballCollision.radius*2) {
                 velocity.y = -velocity.y;
+                wallHitSound.play();
             }
             else if(Intersector.overlaps(ballCollision, paddle1Collision)) {
+                paddlehitSound.play();
                 float angle = (float) Math.atan2(position.y - (paddle1Collision.y + paddle1Collision.height/2), position.x - (paddle1Collision.x + paddle1Collision.width/2));
                 velocity.set((float)Math.cos(angle), (float)Math.sin(angle));
             }
             else if(Intersector.overlaps(ballCollision, paddle2Collision)) {
+                paddlehitSound.play();
                 float angle = (float) Math.atan2(position.y - (paddle2Collision.y + paddle2Collision.height/2), position.x - (paddle2Collision.x + paddle2Collision.width/2));
                 velocity.set((float)Math.cos(angle), (float)Math.sin(angle));
             }
@@ -85,6 +94,7 @@ public class Ball {
     }
 
     public void endRound() {
+        gameOverSound.play();
         isDelayInProgress = true;
         roundDelayTimer = 3;
     }
