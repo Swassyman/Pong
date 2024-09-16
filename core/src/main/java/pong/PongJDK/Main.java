@@ -8,18 +8,30 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class Main implements ApplicationListener {
-    Texture player1Pong; //for left pong
-    Texture player2Pong; //for right pong
-    Texture ball; //for ball duh
-    Texture board; //for board duh
-    FitViewport viewport; //for the window
+    // left pong texture
+    Texture player1Pong;
+    // right pong texture
+    Texture player2Pong;
+    // ball texture
+    Texture ball;
+    // board texture
+    Texture board;
+    // viewport for the window
+    FitViewport viewport;
+    // spritebatch for drawing textures
     SpriteBatch spriteBatch;
-    Sprite pong1Sprite; //for left pong
-    Sprite pong2Sprite; //for right pong
+    // sprite for the left pong
+    Sprite pong1Sprite;
+    // sprite for the right pong
+    Sprite pong2Sprite;
+    //Collision Rectangles
+    Rectangle paddle1Collision;
+    Rectangle paddle2Collision;
 
     @Override
     public void create() {
@@ -36,17 +48,16 @@ public class Main implements ApplicationListener {
 
         pong1Sprite = new Sprite(player1Pong);
         pong1Sprite.setSize(.22f,1.25f); //setting the right size of the pongs
-       // pong1Sprite.setX(0); // setting position of pong to left side
+        paddle1Collision = new Rectangle();
 
         pong2Sprite = new Sprite(player2Pong);
         pong2Sprite.setSize(.22f,1.25f);
-        float posPong2 = worldWidth - .23f; //position of pong 2
-        //pong2Sprite.setX(worldWidth-.23f); //position of pong to right side
+        paddle2Collision = new Rectangle();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true); //updating viewport incase of resize of window
+        viewport.update(width, height, true); //updating viewport in case of resize of window
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined); //update camera projection matrix every resize
         // i saw it on the docs
     }
@@ -80,7 +91,10 @@ public class Main implements ApplicationListener {
 
         // clamp the paddles to the screen so they don't go off the bottom or top
         pong1Sprite.setY(MathUtils.clamp(pong1Sprite.getY(), 0, worldHeight-pong1Sprite.getHeight()));
+        paddle1Collision.set(pong1Sprite.getX(), pong1Sprite.getY() + pong1Sprite.getHeight(), pong1Sprite.getX(), pong1Sprite.getX() + pong1Sprite.getWidth());
+
         pong2Sprite.setY(MathUtils.clamp(pong2Sprite.getY(), 0, worldHeight-pong2Sprite.getHeight()));
+        paddle2Collision.set(pong2Sprite.getX(), pong2Sprite.getY() + pong2Sprite.getHeight(), pong2Sprite.getX(), pong2Sprite.getX() + pong2Sprite.getWidth());
 
         // move the paddles based on user input
         //Left Paddle
