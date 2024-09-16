@@ -6,7 +6,8 @@ This project was generated with a template including simple application launcher
 
 ## Screenshots
 
-![Uploading Screenshot from 2024-09-17 01-07-41.png…]()
+![Screenshot from 2024-09-17 01-09-09](https://github.com/user-attachments/assets/819bcd62-96c2-47f2-81b8-6325df1f62f7)
+
 
 ## Platforms
 
