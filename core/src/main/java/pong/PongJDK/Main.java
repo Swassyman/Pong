@@ -32,16 +32,13 @@ public class Main implements ApplicationListener {
         float worldHeight = viewport.getWorldHeight();
 
         pong1Sprite = new Sprite(player1Pong);
-        float pong1SpriteWidth = pong1Sprite.getWidth();
-        float pong1SpriteHeight = pong1Sprite.getHeight();
         pong1Sprite.setSize(.22f,1.25f); //setting the right size of the pongs
         pong1Sprite.setX(0); // setting position of pong to left side
 
         pong2Sprite = new Sprite(player2Pong);
-        float pong2SpriteWidth = pong2Sprite.getWidth();
-        float pong2SpriteHeight = pong2Sprite.getHeight();
         pong2Sprite.setSize(.22f,1.25f);
-        pong2Sprite.setX(worldWidth - pong2SpriteWidth); //not working as intended
+        float posPong2 = worldWidth - .23f; //position of pong 2
+        pong2Sprite.setX(worldWidth-.23f);
     }
 
     @Override
