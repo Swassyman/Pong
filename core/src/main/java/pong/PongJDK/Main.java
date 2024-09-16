@@ -1,14 +1,16 @@
 package pong.PongJDK;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main implements ApplicationListener {
     Texture player1Pong; //for left pong
     Texture player2Pong; //for right pong
@@ -32,28 +34,26 @@ public class Main implements ApplicationListener {
         float worldHeight = viewport.getWorldHeight();
 
         pong1Sprite = new Sprite(player1Pong);
-        float pong1SpriteWidth = pong1Sprite.getWidth();
-        float pong1SpriteHeight = pong1Sprite.getHeight();
         pong1Sprite.setSize(.22f,1.25f); //setting the right size of the pongs
-        pong1Sprite.setX(0); // setting position of pong to left side
+       // pong1Sprite.setX(0); // setting position of pong to left side
 
         pong2Sprite = new Sprite(player2Pong);
-        float pong2SpriteWidth = pong2Sprite.getWidth();
-        float pong2SpriteHeight = pong2Sprite.getHeight();
         pong2Sprite.setSize(.22f,1.25f);
-        pong2Sprite.setX(worldWidth - pong2SpriteWidth); //not working as intended
+        float posPong2 = worldWidth - .23f; //position of pong 2
+        //pong2Sprite.setX(worldWidth-.23f); //position of pong to right side
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true); //updating viewport incase of resize of window
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined); //update camera projection matrix every resize
-                                                                        // i saw it on the docs
+        // i saw it on the docs
     }
 
     @Override
     public void render() {
-       draw(); //forms the textures needed every frame // possibly really bad practice
+        draw(); //forms the textures needed every frame // possibly really bad practice
+        logicOfWaddles(); //to move the waddles
     }
 
     private void draw() {
@@ -63,11 +63,35 @@ public class Main implements ApplicationListener {
 
         float worldHeight = viewport.getWorldHeight();
         float worldWidth = viewport.getWorldWidth();
-        spriteBatch.draw(board,0,0, worldWidth, worldHeight); //draw background board
+        spriteBatch.draw(board, 0, 0, worldWidth, worldHeight); //draw background board
         pong1Sprite.draw(spriteBatch); //draw left pong
         pong2Sprite.draw(spriteBatch); //draw right pong
+        pong2Sprite.setSize(.22f,1.25f);
+        float posPong2 = worldWidth - .23f; //position of pong 2
+        pong2Sprite.setX(worldWidth-.23f); //position of pong to right side
 
         spriteBatch.end();
+    }
+    private void logicOfWaddles(){
+        float delta = Gdx.graphics.getDeltaTime();
+        float speed = 3f;
+        float worldHeight = viewport.getWorldHeight();
+        float worldWidth = viewport.getWorldWidth();
+        pong1Sprite.setY(MathUtils.clamp(pong1Sprite.getY(), 0, worldHeight-pong1Sprite.getHeight()));
+        pong2Sprite.setY(MathUtils.clamp(pong2Sprite.getY(), 0, worldHeight-pong2Sprite.getHeight()));
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            pong1Sprite.translateY(speed*delta);
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+            pong1Sprite.translateY(-speed*delta);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            pong2Sprite.translateY(speed*delta);
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            pong2Sprite.translateY(-speed*delta);
+        }
     }
 
     @Override
