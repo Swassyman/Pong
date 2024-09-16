@@ -32,8 +32,8 @@ public class Main implements ApplicationListener {
     // sprite for the ball
     Sprite ballSprite;
     //Collision Rectangles
-    Rectangle paddle1Collision;
-    Rectangle paddle2Collision;
+    public Rectangle paddle1Collision;
+    public Rectangle paddle2Collision;
     // class
     private Ball ball1;
 
@@ -60,13 +60,14 @@ public class Main implements ApplicationListener {
 
         ballSprite = new Sprite(ball);
         ball1 = new Ball(worldWidth/2,worldHeight/2, 0,0);
+        ball1.createBall();
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true); //updating viewport in case of resize of window
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined); //update camera projection matrix every resize
-        // i saw it on the docs
+        // I saw it on the docs
     }
 
     @Override
@@ -83,28 +84,28 @@ public class Main implements ApplicationListener {
 
         float worldHeight = viewport.getWorldHeight();
         float worldWidth = viewport.getWorldWidth();
-        spriteBatch.draw(board, 0, 0, worldWidth, worldHeight); //draw background board
+        //spriteBatch.draw(board, 0, 0, worldWidth, worldHeight); //draw background board
         pong1Sprite.draw(spriteBatch); //draw left pong
         pong2Sprite.setPosition(worldWidth - pong2Sprite.getWidth(), pong2Sprite.getY());
         pong2Sprite.draw(spriteBatch); //draw right pong
-
-        ball1.drawBall();
+        ball1.drawBall(spriteBatch);
         spriteBatch.end();
     }
     private void logicOfWaddles(){
         float delta = Gdx.graphics.getDeltaTime();
-        float speed = 3f;
-        float worldHeight = viewport.getWorldHeight();
+        float speed = 5f;
         float worldWidth = viewport.getWorldWidth();
+        float worldHeight = viewport.getWorldHeight();
+        viewport.getWorldWidth();
 
         // clamp the paddles to the screen so they don't go off the bottom or top
         pong1Sprite.setY(MathUtils.clamp(pong1Sprite.getY(), 0, worldHeight-pong1Sprite.getHeight()));
-        paddle1Collision.set(pong1Sprite.getX(), pong1Sprite.getY() + pong1Sprite.getHeight(), pong1Sprite.getX(), pong1Sprite.getX() + pong1Sprite.getWidth());
+        paddle1Collision.set(pong1Sprite.getX(), pong1Sprite.getY(), .22f, 1.25f);
 
         pong2Sprite.setY(MathUtils.clamp(pong2Sprite.getY(), 0, worldHeight-pong2Sprite.getHeight()));
-        paddle2Collision.set(pong2Sprite.getX(), pong2Sprite.getY() + pong2Sprite.getHeight(), pong2Sprite.getX(), pong2Sprite.getX() + pong2Sprite.getWidth());
+        paddle2Collision.set(pong2Sprite.getX(), pong2Sprite.getY(), .22f, 1.25f    );
 
-        ball1.updateBall();
+        ball1.updateBall(paddle1Collision, paddle2Collision, worldWidth, worldHeight);
         // move the paddles based on user input
         //Left Paddle
         float dy = 0;
