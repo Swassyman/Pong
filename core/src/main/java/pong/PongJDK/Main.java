@@ -29,9 +29,13 @@ public class Main implements ApplicationListener {
     Sprite pong1Sprite;
     // sprite for the right pong
     Sprite pong2Sprite;
+    // sprite for the ball
+    Sprite ballSprite;
     //Collision Rectangles
     Rectangle paddle1Collision;
     Rectangle paddle2Collision;
+    // class
+    private Ball ball1;
 
     @Override
     public void create() {
@@ -53,6 +57,9 @@ public class Main implements ApplicationListener {
         pong2Sprite = new Sprite(player2Pong);
         pong2Sprite.setSize(.22f,1.25f);
         paddle2Collision = new Rectangle();
+
+        ballSprite = new Sprite(ball);
+        ball1 = new Ball(worldWidth/2,worldHeight/2, 0,0);
     }
 
     @Override
@@ -81,6 +88,7 @@ public class Main implements ApplicationListener {
         pong2Sprite.setPosition(worldWidth - pong2Sprite.getWidth(), pong2Sprite.getY());
         pong2Sprite.draw(spriteBatch); //draw right pong
 
+        ball1.drawBall();
         spriteBatch.end();
     }
     private void logicOfWaddles(){
@@ -96,6 +104,7 @@ public class Main implements ApplicationListener {
         pong2Sprite.setY(MathUtils.clamp(pong2Sprite.getY(), 0, worldHeight-pong2Sprite.getHeight()));
         paddle2Collision.set(pong2Sprite.getX(), pong2Sprite.getY() + pong2Sprite.getHeight(), pong2Sprite.getX(), pong2Sprite.getX() + pong2Sprite.getWidth());
 
+        ball1.updateBall();
         // move the paddles based on user input
         //Left Paddle
         float dy = 0;
