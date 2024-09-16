@@ -4,6 +4,10 @@ A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://git
 
 This project was generated with a template including simple application launchers and an empty `ApplicationListener` implementation.
 
+## Screenshots
+
+![Uploading Screenshot from 2024-09-17 01-07-41.png…]()
+
 ## Platforms
 
 - `core`: Main module with the application logic shared by all platforms.
