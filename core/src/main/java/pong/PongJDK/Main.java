@@ -61,6 +61,7 @@ public class Main implements ApplicationListener {
         ballSprite = new Sprite(ball);
         ball1 = new Ball(worldWidth/2,worldHeight/2, 0,0);
         ball1.createBall();
+
     }
 
     @Override
@@ -81,10 +82,9 @@ public class Main implements ApplicationListener {
         ScreenUtils.clear(Color.BLACK); //clears screen every frame
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined); //camera shiz
         spriteBatch.begin();
-
         float worldHeight = viewport.getWorldHeight();
         float worldWidth = viewport.getWorldWidth();
-        //spriteBatch.draw(board, 0, 0, worldWidth, worldHeight); //draw background board
+        spriteBatch.draw(board, 0, 0, worldWidth, worldHeight); //draw board
         pong1Sprite.draw(spriteBatch); //draw left pong
         pong2Sprite.setPosition(worldWidth - pong2Sprite.getWidth(), pong2Sprite.getY());
         pong2Sprite.draw(spriteBatch); //draw right pong
@@ -117,6 +117,7 @@ public class Main implements ApplicationListener {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) dy = speed;
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) dy = -speed;
         pong2Sprite.translateY(dy * delta);
+
     }
 
     @Override
