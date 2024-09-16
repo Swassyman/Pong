@@ -23,6 +23,7 @@ public class Main implements ApplicationListener {
 
     @Override
     public void create() {
+        //loading textures and objects
         player1Pong = new Texture("pong assets/arts/Player.png");
         player2Pong = new Texture("pong assets/arts/Computer.png");
         ball = new Texture("pong assets/arts/Ball.png");
@@ -52,8 +53,9 @@ public class Main implements ApplicationListener {
 
     @Override
     public void render() {
-        draw(); //forms the textures needed every frame // possibly really bad practice
+        // only redraw when something changes
         logicOfWaddles(); //to move the waddles
+        draw(); //forms the textures needed every frame
     }
 
     private void draw() {
@@ -65,10 +67,8 @@ public class Main implements ApplicationListener {
         float worldWidth = viewport.getWorldWidth();
         spriteBatch.draw(board, 0, 0, worldWidth, worldHeight); //draw background board
         pong1Sprite.draw(spriteBatch); //draw left pong
+        pong2Sprite.setPosition(worldWidth - pong2Sprite.getWidth(), pong2Sprite.getY());
         pong2Sprite.draw(spriteBatch); //draw right pong
-        pong2Sprite.setSize(.22f,1.25f);
-        float posPong2 = worldWidth - .23f; //position of pong 2
-        pong2Sprite.setX(worldWidth-.23f); //position of pong to right side
 
         spriteBatch.end();
     }
@@ -77,21 +77,22 @@ public class Main implements ApplicationListener {
         float speed = 3f;
         float worldHeight = viewport.getWorldHeight();
         float worldWidth = viewport.getWorldWidth();
+
+        // clamp the paddles to the screen so they don't go off the bottom or top
         pong1Sprite.setY(MathUtils.clamp(pong1Sprite.getY(), 0, worldHeight-pong1Sprite.getHeight()));
         pong2Sprite.setY(MathUtils.clamp(pong2Sprite.getY(), 0, worldHeight-pong2Sprite.getHeight()));
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            pong1Sprite.translateY(speed*delta);
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            pong1Sprite.translateY(-speed*delta);
-        }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            pong2Sprite.translateY(speed*delta);
-        }
-        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            pong2Sprite.translateY(-speed*delta);
-        }
+        // move the paddles based on user input
+        //Left Paddle
+        float dy = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) dy = speed;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) dy = -speed;
+        pong1Sprite.translateY(dy * delta);
+
+        dy = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) dy = speed;
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) dy = -speed;
+        pong2Sprite.translateY(dy * delta);
     }
 
     @Override
