@@ -3,6 +3,7 @@ package pong.PongJDK;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -36,6 +37,7 @@ public class Main implements ApplicationListener {
     public Rectangle paddle2Collision;
     // class
     private Ball ball1;
+    Music bgm;
 
     @Override
     public void create() {
@@ -46,7 +48,9 @@ public class Main implements ApplicationListener {
         board = new Texture("pong assets/arts/Board.png");
         viewport = new FitViewport(8,5);
         spriteBatch = new SpriteBatch();
-
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("pong assets/music/bgm.mp3"));
+        bgm.setLooping(true);
+        bgm.play();
         float worldWidth = viewport.getWorldWidth();
         float worldHeight = viewport.getWorldHeight();
 

@@ -32,8 +32,8 @@ public class Ball {
         ballSprite.setSize(0.2f,0.2f);
         SpriteBatch ballSpriteBatch = new SpriteBatch();
         velocity.x = -.75f;
-        paddlehitSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/player2hit.mp3"));
-        wallHitSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/player1hit.mp3"));
+        paddlehitSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/player1hit.mp3"));
+        wallHitSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/wallhit.mp3"));
         gameOverSound = Gdx.audio.newSound(Gdx.files.internal("pong assets/music/restart.mp3"));
     }
     public void updateBall(Rectangle paddle1Collision, Rectangle paddle2Collision, float worldWidth, float worldHeight) {
